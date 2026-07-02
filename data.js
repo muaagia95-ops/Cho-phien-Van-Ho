@@ -51,6 +51,8 @@ const SITE_DATA = {
     { section: "am-thuc", name: "Gian hàng 03", group: "Ẩm thực", desc: "Các món ăn dân tộc, món ăn truyền thống." },
     { section: "van-hoa", name: "Gian hàng 04", group: "Thủ công", desc: "Thổ cẩm, sản phẩm lưu niệm, đồ thủ công." }
   ],
+
   clipTitles: {
-    clip01: "Khai mạc chợ phiên Vân Hồ",
-  };
+    clip01: "Khai mạc chợ phiên Vân Hồ"
+  }
+};
