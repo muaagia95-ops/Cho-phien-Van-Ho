@@ -1,24 +1,13 @@
 const SITE_DATA = {
   title: "Chợ phiên Vân Hồ",
   subtitle: "Không gian văn hóa - du lịch - thương mại",
-  intro: "Trang triển lãm số giới thiệu không gian chợ phiên, từ cổng chợ, toàn cảnh, từng gian hàng đến hoạt động văn hóa và sản phẩm địa phương.",
+  intro: "Trang triển lãm số giới thiệu không gian chợ phiên, khu nông sản, khu ẩm thực, hoạt động văn hóa và sản phẩm địa phương.",
   contact: {
     location: "Chợ phiên Vân Hồ, xã Vân Hồ, tỉnh Sơn La",
     time: "Cập nhật theo lịch tổ chức",
     phone: "Cập nhật sau"
   },
   sections: [
-    {
-      id: "cong-cho",
-      title: "Cổng chợ",
-      icon: "🚩",
-      description: "Điểm bắt đầu hành trình tham quan, check-in và giới thiệu chung.",
-      images: [
-        "images/cong-cho/01.jpg",
-        "images/cong-cho/02.jpg",
-        "images/cong-cho/03.jpg"
-      ]
-    },
     {
       id: "nong-san",
       title: "Khu nông sản",
