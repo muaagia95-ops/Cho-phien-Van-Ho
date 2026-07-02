@@ -9,40 +9,48 @@
 :root{--green:#0b6b3a;--green2:#0e8a4d;--gold:#f3c15f;--dark:#123524;--bg:#f7faf5;--text:#1f2937}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}a{text-decoration:none}
 nav{position:sticky;top:0;z-index:20;background:rgba(11,107,58,.94);color:white;padding:13px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px #0002}
-nav a,nav b{color:white}.hero{padding:70px 7%;color:white;background:linear-gradient(120deg,#073d25ee,#0b6b3aaa);background-size:cover;background-position:center}.hero h1{font-size:clamp(40px,6vw,72px);margin:0 0 12px}.hero p{font-size:20px;line-height:1.5;max-width:900px}
+nav a,nav b{color:white}
+.hero{padding:70px 7%;color:white;background:linear-gradient(120deg,#073d25ee,#0b6b3aaa);background-size:cover;background-position:center}
+.hero h1{font-size:clamp(40px,6vw,72px);margin:0 0 12px}.hero p{font-size:20px;line-height:1.5;max-width:900px}
 section{padding:60px 7%}.title{text-align:center;margin-bottom:30px}.title h2{font-size:38px;color:var(--dark);margin:0 0 8px}.title p{color:#607080;font-size:18px;margin:0}
 .shops{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.shop{background:white;border-radius:20px;padding:20px;border-top:5px solid var(--green2);box-shadow:0 10px 25px #0001}.shop h3{color:var(--green);margin:0 0 8px}
-
-
+.activitiesSection{background:#fff8ea}.activities{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.activity{background:white;border-radius:22px;overflow:hidden;box-shadow:0 10px 25px #0001;cursor:pointer}.activity img{width:100%;height:240px;object-fit:cover;display:block}.activity h3{margin:0;padding:18px;color:var(--green);font-size:21px}
+.lightbox{display:none;position:fixed;inset:0;background:#000d;z-index:100;align-items:center;justify-content:center;padding:20px}.lightbox.show{display:flex}.lightbox img{max-width:96vw;max-height:90vh;border-radius:16px}
 footer{text-align:center;background:#08351f;color:white;padding:30px 7%}
-@media(max-width:900px){.shops{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){section{padding:48px 5%}.shops,}
+@media(max-width:900px){.shops,.activities{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){section{padding:48px 5%}.shops,.activities{grid-template-columns:1fr}.activity img{height:230px}}
 </style>
 </head>
 <body>
 <nav><b>🌿 CHỢ PHIÊN VÂN HỒ</b><a href="index.html">← Về trang chính</a></nav>
 <header class="hero" id="hero"><h1 id="pageTitle"></h1><p id="pageDesc"></p></header>
-<section><div class="title"><h2>Gian hàng trong khu vực</h2><p>Các nội dung, sản phẩm và hoạt động liên quan</p></div><div class="shops" id="shops"></div></section>
+<section><div class="title"><h2>Danh sách các gian hàng</h2><p>Các gian hàng thuộc khu vực này</p></div><div class="shops" id="shops"></div></section>
+<section class="activitiesSection"><div class="title"><h2>Hoạt động nổi bật</h2><p>Một số hình ảnh tiêu biểu tại khu vực</p></div><div class="activities" id="activities"></div></section>
 <footer><h3>CHỢ PHIÊN VÂN HỒ</h3><p>Không gian số quảng bá văn hóa, du lịch và sản phẩm địa phương</p></footer>
+<div class="lightbox" id="lightbox"><img id="lightboxImg" alt=""></div>
 <script>
 const PAGE_ID="am-thuc";
 const section=SITE_DATA.sections.find(s=>s.id===PAGE_ID);
-const pad=n=>String(n).padStart(2,"0");
-const imagePath=n=>`${section.folder}/${pad(n)}.jpg`;
 const pageTitle=document.getElementById("pageTitle");
 const pageDesc=document.getElementById("pageDesc");
 const hero=document.getElementById("hero");
 const shops=document.getElementById("shops");
-
+const activities=document.getElementById("activities");
+const lightbox=document.getElementById("lightbox");
+const lightboxImg=document.getElementById("lightboxImg");
 pageTitle.textContent=section.icon+" "+section.title;
 pageDesc.textContent=section.description;
-hero.style.backgroundImage=`linear-gradient(120deg,#073d25ee,#0b6b3aaa),url('${imagePath(1)}')`;
-
-SITE_DATA.shops.filter(s=>s.section===PAGE_ID).forEach(s=>{
-  shops.innerHTML+=`<div class="shop"><h3>${s.name}</h3><p><b>${s.group}</b></p><p>${s.desc}</p></div>`;
-});
+hero.style.backgroundImage=`linear-gradient(120deg,#073d25ee,#0b6b3aaa),url('${section.folder}/01.jpg')`;
+SITE_DATA.shops.filter(s=>s.section===PAGE_ID).forEach(s=>{shops.innerHTML+=`<div class="shop"><h3>${s.name}</h3><p><b>${s.group}</b></p><p>${s.desc}</p></div>`;});
 if(!shops.innerHTML.trim()) shops.innerHTML="<p>Chưa cập nhật gian hàng.</p>";
-
+const featuredActivities=[{"file": "01.jpg", "title": "Không gian ẩm thực"}, {"file": "02.jpg", "title": "Chế biến món ăn truyền thống"}, {"file": "03.jpg", "title": "Trải nghiệm ẩm thực địa phương"}];
+featuredActivities.forEach(item=>{
+  const card=document.createElement("div");card.className="activity";
+  const img=document.createElement("img");img.src=`${section.folder}/${item.file}`;img.alt=item.title;img.onerror=()=>card.remove();img.onclick=()=>{lightboxImg.src=img.src;lightbox.classList.add("show")};
+  const heading=document.createElement("h3");heading.textContent=item.title;
+  card.appendChild(img);card.appendChild(heading);activities.appendChild(card);
+});
+lightbox.onclick=()=>lightbox.classList.remove("show");
 </script>
 </body>
 </html>
