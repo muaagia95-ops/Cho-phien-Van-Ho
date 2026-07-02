@@ -10,7 +10,7 @@ const SITE_DATA = {
   clipFolder: "clips",
   clipPrefix: "clip",
   clipExt: "mp4",
-  clipMax: 1000,
+  clipMax: 10,
 
   contact: {
     location: "Chợ phiên Vân Hồ, xã Vân Hồ, tỉnh Sơn La",
