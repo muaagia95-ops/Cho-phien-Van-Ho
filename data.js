@@ -4,7 +4,7 @@ const SITE_DATA = {
   intro: "Trang triển lãm số giới thiệu không gian chợ phiên, khu nông sản, khu ẩm thực, hoạt động văn hóa và sản phẩm địa phương.",
 
   // Ảnh: mỗi thư mục cho phép từ 01.jpg đến 1000000.jpg
-  imageMax: 1000000,
+  imageMax: 1000,
 
   // Clip: thư mục clips, tên từ clip01.mp4 đến clip1000.mp4
   clipFolder: "clips",
