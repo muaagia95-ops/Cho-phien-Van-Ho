@@ -9,36 +9,88 @@
 :root{--green:#0b6b3a;--green2:#0e8a4d;--gold:#f3c15f;--dark:#123524;--bg:#f7faf5;--text:#1f2937}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}a{text-decoration:none}
 nav{position:sticky;top:0;z-index:20;background:rgba(11,107,58,.94);color:white;padding:13px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 20px #0002}
-nav a,nav b{color:white}.hero{padding:70px 7%;color:white;background:linear-gradient(120deg,#073d25ee,#0b6b3aaa);background-size:cover;background-position:center}.hero h1{font-size:clamp(40px,6vw,72px);margin:0 0 12px}.hero p{font-size:20px;line-height:1.5;max-width:900px}
+nav a,nav b{color:white}
+.hero{padding:70px 7%;color:white;background:linear-gradient(120deg,#073d25ee,#0b6b3aaa);background-size:cover;background-position:center}
+.hero h1{font-size:clamp(40px,6vw,72px);margin:0 0 12px}.hero p{font-size:20px;line-height:1.5;max-width:900px}
 section{padding:60px 7%}.title{text-align:center;margin-bottom:30px}.title h2{font-size:38px;color:var(--dark);margin:0 0 8px}.title p{color:#607080;font-size:18px;margin:0}
-.clipGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}.clipCard{background:white;border-radius:22px;overflow:hidden;box-shadow:0 10px 25px #0001}.clipCard iframe,.clipCard video{width:100%;height:320px;border:0;background:#111}.clipBody{padding:20px}.clipBody h3{color:var(--green);margin:0 0 8px}.empty{background:white;border-radius:22px;padding:28px;box-shadow:0 10px 25px #0001;text-align:center}
+.clipGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.clipCard{background:white;border-radius:22px;overflow:hidden;box-shadow:0 10px 25px #0001}
+.clipCard video{width:100%;height:320px;background:#111;display:block}
+.clipBody{padding:20px}.clipBody h3{color:var(--green);margin:0 0 8px}.clipBody p{line-height:1.55;color:#4b5563}
+.empty{background:white;border-radius:22px;padding:28px;box-shadow:0 10px 25px #0001;text-align:center}
 footer{text-align:center;background:#08351f;color:white;padding:30px 7%}
-@media(max-width:900px){.clipGrid{grid-template-columns:1fr}.clipCard iframe,.clipCard video{height:280px}}
+@media(max-width:900px){.clipGrid{grid-template-columns:1fr}.clipCard video{height:280px}}
 </style>
 </head>
 <body>
 <nav><b>🌿 CHỢ PHIÊN VÂN HỒ</b><a href="index.html">← Về trang chính</a></nav>
 <header class="hero" id="hero"><h1>🎬 Clip</h1><p>Danh sách clip giới thiệu và hoạt động tại chợ phiên.</p></header>
-<section><div class="title"><h2>Danh sách clip</h2><p>Các clip hoạt động văn hóa, ẩm thực và gian hàng</p></div><div class="clipGrid" id="clipGrid"></div></section>
+
+<section>
+  <div class="title">
+    <h2>Danh sách clip</h2>
+    <p>Clip tự hiển thị từ clip01.mp4 đến clip1000.mp4 trong thư mục clips</p>
+  </div>
+  <div class="clipGrid" id="clipGrid"></div>
+  <div class="empty" id="emptyBox" style="display:none">
+    <h3>Chưa có clip</h3>
+    <p>Copy video vào thư mục clips và đặt tên clip01.mp4, clip02.mp4...</p>
+  </div>
+</section>
+
 <footer><h3>CHỢ PHIÊN VÂN HỒ</h3><p>Không gian số quảng bá văn hóa, du lịch và sản phẩm địa phương</p></footer>
+
 <script>
 const pad=n=>String(n).padStart(2,"0");
 const imagePath=(section,n)=>`${section.folder}/${pad(n)}.jpg`;
+
 const hero=document.getElementById("hero");
 const clipGrid=document.getElementById("clipGrid");
-hero.style.backgroundImage=`linear-gradient(120deg,#073d25ee,#0b6b3aaa),url('${imagePath(SITE_DATA.sections[0],1)}')`;
+const emptyBox=document.getElementById("emptyBox");
 
-const clips=SITE_DATA.clips||[];
-if(!clips.length){
-  clipGrid.innerHTML='<div class="empty"><h3>Chưa cập nhật clip</h3><p>Thêm danh sách clip trong file data.js.</p></div>';
+if(SITE_DATA.sections && SITE_DATA.sections.length){
+  hero.style.backgroundImage=`linear-gradient(120deg,#073d25ee,#0b6b3aaa),url('${imagePath(SITE_DATA.sections[0],1)}')`;
 }
-clips.forEach(c=>{
-  const isVideo=/\.(mp4|webm|ogg)$/i.test(c.url);
-  const media=isVideo
-    ? `<video controls src="${c.url}"></video>`
-    : `<iframe src="${c.url}" allowfullscreen></iframe>`;
-  clipGrid.innerHTML+=`<div class="clipCard">${media}<div class="clipBody"><h3>${c.title}</h3><p>${c.desc||""}</p></div></div>`;
-});
+
+const clipFolder=SITE_DATA.clipFolder || "clips";
+const clipPrefix=SITE_DATA.clipPrefix || "clip";
+const clipExt=SITE_DATA.clipExt || "mp4";
+const clipMax=SITE_DATA.clipMax || 1000;
+
+let shown=0;
+
+for(let i=1;i<=clipMax;i++){
+  const name=`${clipPrefix}${pad(i)}.${clipExt}`;
+  const src=`${clipFolder}/${name}`;
+
+  const card=document.createElement("div");
+  card.className="clipCard";
+
+  const video=document.createElement("video");
+  video.controls=true;
+  video.preload="metadata";
+  video.src=src;
+
+  const body=document.createElement("div");
+  body.className="clipBody";
+  body.innerHTML=`<h3>Clip ${pad(i)}</h3><p>${name}</p>`;
+
+  video.onloadedmetadata=()=>{
+    shown++;
+    emptyBox.style.display="none";
+  };
+
+  video.onerror=()=>{
+    card.remove();
+    if(shown===0 && document.querySelectorAll(".clipCard").length===0){
+      emptyBox.style.display="block";
+    }
+  };
+
+  card.appendChild(video);
+  card.appendChild(body);
+  clipGrid.appendChild(card);
+}
 </script>
 </body>
 </html>
