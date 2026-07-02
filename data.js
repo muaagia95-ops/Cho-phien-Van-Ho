@@ -2,12 +2,22 @@ const SITE_DATA = {
   title: "Chợ phiên Vân Hồ",
   subtitle: "Không gian văn hóa - du lịch - thương mại",
   intro: "Trang triển lãm số giới thiệu không gian chợ phiên, khu nông sản, khu ẩm thực, hoạt động văn hóa và sản phẩm địa phương.",
-  imageMax: 100,
+
+  // Ảnh: mỗi thư mục cho phép từ 01.jpg đến 1000000.jpg
+  imageMax: 1000000,
+
+  // Clip: thư mục clips, tên từ clip01.mp4 đến clip1000.mp4
+  clipFolder: "clips",
+  clipPrefix: "clip",
+  clipExt: "mp4",
+  clipMax: 1000,
+
   contact: {
     location: "Chợ phiên Vân Hồ, xã Vân Hồ, tỉnh Sơn La",
     time: "Cập nhật theo lịch tổ chức",
     phone: "Cập nhật sau"
   },
+
   sections: [
     {
       id: "nong-san",
@@ -34,6 +44,7 @@ const SITE_DATA = {
       page: "van-hoa.html"
     }
   ],
+
   shops: [
     { section: "nong-san", name: "Gian hàng 01", group: "Nông sản", desc: "Rau củ, quả tươi, sản phẩm địa phương." },
     { section: "nong-san", name: "Gian hàng 02", group: "OCOP", desc: "Sản phẩm đặc trưng, quà tặng địa phương." },
