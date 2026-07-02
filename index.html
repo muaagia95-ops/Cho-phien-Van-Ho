@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chợ phiên Vân Hồ</title>
 <script src="data.js"></script>
+<script src="gian-hang-data.js"></script>
 <style>
 :root{--green:#0b6b3a;--green2:#0e8a4d;--gold:#f3c15f;--dark:#123524;--bg:#f7faf5;--text:#1f2937}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
@@ -18,19 +19,19 @@ nav b{font-size:18px}.links{display:flex;gap:16px;font-size:14px}.links a{color:
 section{padding:72px 7%}.title{text-align:center;margin-bottom:34px}.title h2{font-size:42px;color:var(--dark);margin:0 0 8px}.title p{color:#607080;font-size:18px;margin:0}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.card{display:block;background:white;border-radius:24px;overflow:hidden;box-shadow:0 10px 25px #0001;text-decoration:none;color:inherit}.card img{width:100%;height:230px;object-fit:cover;background:#e5e7eb}.body{padding:20px}.body h3{margin:0 0 10px;color:var(--green);font-size:24px}.body p{line-height:1.55;color:#4b5563}
 .album{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.album img{width:100%;height:190px;object-fit:cover;border-radius:18px;cursor:pointer;box-shadow:0 8px 20px #0002}.mediaGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}.mediaCard{display:block;background:white;border-radius:24px;overflow:hidden;box-shadow:0 10px 25px #0001;text-decoration:none;color:inherit}.mediaCard img{width:100%;height:260px;object-fit:cover;background:#e5e7eb}.mediaCard .body{padding:22px}.mediaCard h3{margin:0 0 10px;color:var(--green);font-size:28px}.mediaCard p{line-height:1.55;color:#4b5563}
-.shops{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.shop{background:white;border-radius:20px;padding:18px;border-top:5px solid var(--green2);box-shadow:0 10px 25px #0001}.shop h3{color:var(--green);margin:0 0 8px}
+.shopCarousel{position:relative}.shops{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;padding:6px 3px 18px;scrollbar-width:thin}.shop{flex:0 0 290px;scroll-snap-align:start;display:block;background:white;border-radius:20px;overflow:hidden;border-top:5px solid var(--green2);box-shadow:0 10px 25px #0001;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s}.shop:hover{transform:translateY(-4px);box-shadow:0 14px 30px #0002}.shopThumb{height:150px;background:linear-gradient(135deg,#e7f4eb,#cfe7d7);position:relative;display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:800;font-size:22px}.shopThumb img{width:100%;height:100%;object-fit:cover}.shopThumb.noImage::after{content:attr(data-label)}.shopBody{padding:18px}.shop h3{color:var(--green);margin:0 0 8px;font-size:21px}.shop p{margin:6px 0;line-height:1.45;color:#4b5563}.shopNav{display:flex;justify-content:flex-end;gap:10px;margin-bottom:12px}.shopNav button{width:42px;height:42px;border:0;border-radius:50%;background:var(--green);color:white;font-size:21px;font-weight:700;cursor:pointer}.shopNav button:hover{background:var(--green2)}
 .lightbox{display:none;position:fixed;inset:0;background:#000d;z-index:100;align-items:center;justify-content:center;padding:20px}.lightbox img{max-width:96vw;max-height:90vh;border-radius:16px}.lightbox.show{display:flex}
 .info{background:#fff8ea}.contact{display:grid;grid-template-columns:1fr 1fr;gap:20px}.box{background:white;border-radius:22px;padding:24px;box-shadow:0 10px 25px #0001}
 footer{text-align:center;background:#08351f;color:white;padding:34px 7%}.muted{opacity:.8;font-size:13px}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.grid,.album,.shops,.contact{grid-template-columns:1fr 1fr}.links{display:none}.slider{height:330px}}
-@media(max-width:560px){section{padding:54px 5%}.hero{padding:60px 5%;min-height:auto}.grid,.album,.shops,.contact,.mediaGrid{grid-template-columns:1fr}.album img{height:230px}.hero p{font-size:17px}}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.grid,.album,.contact{grid-template-columns:1fr 1fr}.links{display:none}.slider{height:330px}.shop{flex-basis:270px}}
+@media(max-width:560px){section{padding:54px 5%}.hero{padding:60px 5%;min-height:auto}.grid,.album,.contact,.mediaGrid{grid-template-columns:1fr}.album img{height:230px}.hero p{font-size:17px}.shop{flex-basis:84vw}}
 </style>
 </head>
 <body>
 <nav><b id="brand"></b><div class="links"><a href="#khonggian">Không gian</a><a href="#gianhang">Gian hàng</a><a href="#album">Album</a><a href="#lienhe">Liên hệ</a></div></nav>
 <header class="hero" id="hero"><div><h1 id="title"></h1><p id="intro"></p><a class="btn" href="#khonggian">Khám phá ngay</a><a class="btn alt" href="#album">Xem album</a></div><div class="slider" id="slider"></div></header>
 <section id="khonggian"><div class="title"><h2>Không gian chợ</h2><p>Các khu vực chính trong hành trình tham quan</p></div><div class="grid" id="sectionCards"></div></section>
-<section id="gianhang" class="info"><div class="title"><h2>Danh sách gian hàng</h2><p>Các gian hàng trong khu vực chợ phiên</p></div><div class="shops" id="shops"></div></section>
+<section id="gianhang" class="info"><div class="title"><h2>Danh sách gian hàng</h2><p>Cuộn từ trái sang phải và bấm vào từng gian hàng để xem thông tin</p></div><div class="shopCarousel"><div class="shopNav"><button id="shopPrev" type="button" aria-label="Cuộn sang trái">‹</button><button id="shopNext" type="button" aria-label="Cuộn sang phải">›</button></div><div class="shops" id="shops"></div></div></section>
 <section id="album"><div class="title"><h2>Album</h2><p>Hình ảnh và clip hoạt động tại chợ phiên</p></div><div class="mediaGrid">
 <a class="mediaCard" href="hinh-anh.html"><img id="photoCover" src="" alt="Hình ảnh"><div class="body"><h3>📷 Hình ảnh</h3><p>Xem toàn bộ hình ảnh hoạt động tại chợ phiên.</p></div></a>
 <a class="mediaCard" href="clip.html"><img id="clipCover" src="" alt="Clip"><div class="body"><h3>🎬 Clip</h3><p>Xem danh sách các clip giới thiệu, hoạt động văn hóa, ẩm thực và gian hàng.</p></div></a>
@@ -75,9 +76,12 @@ SITE_DATA.sections.forEach(s=>{
   sectionCards.innerHTML+=`<a class="card" href="${s.page}"><img src="${imagePath(s,1)}" alt="${s.title}" onerror="this.remove()"><div class="body"><h3>${s.icon} ${s.title}</h3><p>${s.description}</p></div></a>`;
 });
 
-SITE_DATA.shops.forEach(s=>{
-  shops.innerHTML+=`<div class="shop"><h3>${s.name}</h3><p><b>${s.group}</b></p><p>${s.desc}</p></div>`;
+SHOP_DATA.shops.forEach(s=>{
+  const thumb=`${s.folder}/01.jpg`;
+  shops.innerHTML+=`<a class="shop" href="gian-hang.html?id=${s.id}"><div class="shopThumb" data-label="${s.name}"><img src="${thumb}" alt="${s.name}" onerror="this.remove();this.parentElement.classList.add('noImage')"></div><div class="shopBody"><h3>${s.name}</h3><p><b>${s.group}</b></p><p>${s.shortDesc}</p></div></a>`;
 });
+shopPrev.onclick=()=>shops.scrollBy({left:-620,behavior:"smooth"});
+shopNext.onclick=()=>shops.scrollBy({left:620,behavior:"smooth"});
 
 photoCover.src=imagePath(SITE_DATA.sections[0],1);
 clipCover.src=imagePath(SITE_DATA.sections[0],2);
